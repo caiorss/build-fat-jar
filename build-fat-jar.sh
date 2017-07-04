@@ -17,12 +17,12 @@ Options:
 
  + Show information about Scala libraries.
 
-   $0 -scala-lib  
+    * ./$(basename $0) -scala-lib  
 
  + Build the fat jar out/output-jar.jar. 
    The main-jar file contains the main class.
 
-   $0 -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar      
+   * ./$(basename $0) -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar      
 
 Note: Use the command below to eanble debug.
 
