@@ -33,6 +33,16 @@ $PATH variable.
 
 No dependencies are required. It only needs java and scala available.
 
+Download it: 
+
+#+BEGIN_SRC sh 
+  cd ~/bin 
+  $ curl -O -L https://github.com/caiorss/build-fat-jar/raw/master/build-fat-jar.sh
+  $ chmod +x build-fat-jar.sh
+
+  $ ./build-fat-jar.sh
+#+END_SRC
+
 ** Usage and Examples
 *** Show user help 
 
