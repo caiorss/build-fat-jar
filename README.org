@@ -1,4 +1,4 @@
-#+TITLE: build-fat-jar - Unix Shell Script to build java fat-jars
+#+TITLE: build-fat-jar - Unix Shell Script to build java/Scala fat-jars
 #+AUTHOR: Caio Rodrigues
 #+STARTUP: showall 
 #+KEYWORDS: unix shell script java scala fatjar fat-jar deploy dependency
