@@ -1,1 +1,244 @@
-* build-fat-jar.sh - Unix Shell Script to build java fat-jars
+#+TITLE: build-fat-jar - Unix Shell Script to build java fat-jars
+#+AUTHOR: Caio Rodrigues
+#+STARTUP: showall 
+#+KEYWORDS: unix shell script java scala fatjar fat-jar deploy dependency
+
+* build-fat-jar.sh 
+** Overview 
+
+build-fat-jar is a Unix shell script to build fat-jars from scala
+applications It means build a single and self-contained jar file with
+the underlying application, all dependencies and scala runt-time
+libraries.
+
+Motivation: It makes the distribution of java and scala libraries
+easier as the user only needs to run =$ java -jar application.jar= or
+double click at the application.jar file. The developer also doesn't
+need to build any shell script to run the jar file.
+** Install 
+** Usage and Examples
+*** Show user help 
+
+ + =./build-fat-jar.sh=
+
+#+BEGIN_SRC text
+$ build-fat-jar.sh 
+Build fat jar. Tool like one-jar to build java fat jar. 
+
+Options: 
+
+ + Show information about Scala libraries.
+
+    * ./build-fat-jar.sh -scala-lib  
+
+ + Build the fat jar out/output-jar.jar. 
+   The main-jar file contains the main class.
+
+   * ./build-fat-jar.sh -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar      
+
+Note: Use the command below to eanble debug.
+
+      $ env DEBUG=true ./build-fat-jar.sh 
+
+#+END_SRC
+*** Show scala libraries location 
+
+ + =./build-fat-jar.sh -scala-lib=
+
+#+BEGIN_SRC sh 
+$ build-fat-jar.sh -scala-lib
+Scala library path = /home/archbox/opt/scala-2.11.8/lib
+
+/home/archbox/opt/scala-2.11.8/lib/akka-actor_2.11-2.3.10.jar
+/home/archbox/opt/scala-2.11.8/lib/config-1.2.1.jar
+/home/archbox/opt/scala-2.11.8/lib/jline-2.12.1.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-actors-2.11.0.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-actors-migration_2.11-1.1.0.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-compiler.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-continuations-library_2.11-1.0.2.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-continuations-plugin_2.11.8-1.0.2.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-library.jar
+/home/archbox/opt/scala-2.11.8/lib/scalap-2.11.8.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-parser-combinators_2.11-1.0.4.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-reflect.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-swing_2.11-1.0.2.jar
+/home/archbox/opt/scala-2.11.8/lib/scala-xml_2.11-1.0.4.jar
+
+#+END_SRC
+*** Build a fat jar for a scala application 
+**** Overview 
+ + =./build-fat-jar.sh -scala out/output-jar.jar main-jar.jar dep1.jar dep2.jar ...=
+
+Build a fat jar for the application main-jar.jar that contains the
+main class packing it with the scala run-time (scala-library.jar) and
+the jar dependencies dep1.jar dep2.jar and so on.
+**** Example 1
+
+It will build a fat-jar for the sample-scala program [[file:testProgram.scala][file:testProgram.scala]]
+
+1. Compile the scala program to a jar file.
+
+#+BEGIN_SRC sh 
+$ scalac testProgram.scala -d testProgram.jar
+#+END_SRC
+
+Run it with scala:
+
+#+BEGIN_SRC sh 
+$ scala testProgram.jar
+Hello world Scala
+
+#+END_SRC
+
+Run it with java: It first will fail because the dependency
+scala-library.jar is missing.
+
+#+BEGIN_SRC sh 
+$ java -cp testProgram.jar scalaApp.Main
+Exception in thread "main" java.lang.NoClassDefFoundError: scala/Predef$
+	at scalaApp.Main$.main(testProgram.scala:8)
+	at scalaApp.Main.main(testProgram.scala)
+Caused by: java.lang.ClassNotFoundException: scala.Predef$
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:372)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:361)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:360)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	... 2 more
+
+$ java -jar testProgram.jar 
+Exception in thread "main" java.lang.NoClassDefFoundError: scala/Predef$
+	at scalaApp.Main$.main(testProgram.scala:8)
+	at scalaApp.Main.main(testProgram.scala)
+Caused by: java.lang.ClassNotFoundException: scala.Predef$
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:372)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:361)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:360)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	... 2 more
+
+#+END_SRC
+
+Try again. Now it works.
+
+#+BEGIN_SRC scala 
+$ java -cp /home/archbox/opt/scala-2.11.8/lib/scala-library.jar:testProgram.jar  scalaApp.Main
+Hello world Scala
+
+#+END_SRC
+
+*2. Build a fat jar.*
+
+It will create the file testProgram-fat.jar.
+
+#+BEGIN_SRC sh 
+$ ./build-fat-jar.sh -scala testProgram-fat.jar testProgram.jar 
+At directory /home/archbox/Documents/projects/build-fat-jar.sh/temp
+
+Manifest Content META-INF/MANIFEST.MF
+
+Manifest-Version: 1.0
+Scala-Compiler-Version: 2.11.8
+Main-Class: scalaApp.Main
+
+Building fat-jar file ...
+added manifest
+adding: library.properties(in = 187) (out= 135)(deflated 27%)
+ignoring entry META-INF/
+ignoring entry META-INF/MANIFEST.MF
+adding: rootdoc.txt(in = 4279) (out= 1329)(deflated 68%)
+adding: scala/(in = 0) (out= 0)(stored 0%)
+adding: scala/languageFeature.class(in = 2317) (out= 1471)(deflated 36%)
+adding: scala/Function6.class(in = 1739) (out= 1012)(deflated 41%)
+
+.... ... ... ... .... .... ... ... ... .... .... ... ... ... ....
+
+adding: scala/Function1.class(in = 2600) (out= 1431)(deflated 44%)
+adding: scala/Function2$mcFJI$sp.class(in = 323) (out= 195)(deflated 39%)
+adding: scala/Tuple3$.class(in = 1555) (out= 720)(deflated 53%)
+adding: scala/Unit.class(in = 1133) (out= 809)(deflated 28%)
+adding: scala/Function21.class(in = 3610) (out= 1671)(deflated 53%)
+adding: scala/Enumeration$$anonfun$scala$Enumeration$$isValDef$1$1.class(in = 1771) (out= 890)(deflated 49%)
+adding: scala/Function7.class(in = 1851) (out= 1055)(deflated 43%)
+adding: scala/Function18$$anonfun$tupled$1.class(in = 2393) (out= 1019)(deflated 57%)
+adding: scala/Predef$StringFormat$.class(in = 2107) (out= 1010)(deflated 52%)
+adding: scala/Tuple5$.class(in = 1805) (out= 768)(deflated 57%)
+adding: scala/Function2$mcZJD$sp.class(in = 323) (out= 196)(deflated 39%)
+adding: scala/Char.class(in = 6084) (out= 3604)(deflated 40%)
+adding: scala/Float.class(in = 5382) (out= 3268)(deflated 39%)
+adding: scala/Enumeration$ValueSet$$anon$2.class(in = 1673) (out= 668)(deflated 60%)
+adding: scalaApp/(in = 0) (out= 0)(stored 0%)
+adding: scalaApp/Main.class(in = 585) (out= 472)(deflated 19%)
+adding: scalaApp/Main$.class(in = 1386) (out= 830)(deflated 40%)
+--------------------------------------
+
+Built file: testProgram-fat.jar Ok.
+
+#+END_SRC
+
+*3. Run it and deploy.*
+
+The fat jar can be run with a simple command =java -jar= or by double
+clicking it if the desktop is configured properly.
+
+#+BEGIN_SRC sh 
+$ java -jar testProgram-fat.jar
+Hello world Scala
+#+END_SRC
+
+**** Example 2 
+
+Example: It will build the fat-jar file out/exrates.jar from the
+application bin/demoTableExrates.jar and pack it with
+_scala-library.jar_ and _scala-xml_2.11-1.0.4.jar_.
+
+#+BEGIN_SRC sh
+  $ build-fat-jar.sh -scala out/exrates.jar \
+    bin/demoTableExrates.jar \
+    bin/jswing.jar /home/archbox/opt/scala-2.11.8/lib/scala-xml_2.11-1.0.4.jar
+
+  # Script output below 
+  At directory /home/archbox/Documents/projects/jswing.scala/out/temp
+  Extracting /home/archbox/Documents/projects/jswing.scala/bin/jswing.jar
+  Extracting /home/archbox/Documents/projects/jswing.scala/bin/jswing.jar
+
+  Manifest Content META-INF/MANIFEST.MF
+
+  Manifest-Version: 1.0
+  Scala-Compiler-Version: 2.11.8
+  Main-Class: Main
+
+  added manifest
+  adding: jswing/(in = 0) (out= 0)(stored 0%)
+  adding: jswing/Event$$anon$1.class(in = 790) (out= 459)(deflated 41%)
+  adding: jswing/Dialog$FileChooser$$anonfun$run$1.class(in = 1179) (out= 613)(deflated 48%)
+  adding: jswing/JUtils$.class(in = 1984) (out= 1071)(deflated 46%)
+  adding: jswing/guis/(in = 0) (out= 0)(stored 0%)
+  adding: jswing/guis/TextView.class(in = 5485) (out= 3114)(deflated 43%)
+  adding: jswing/guis/PictureFrame$.class(in = 1114) (out= 561)(deflated 49%)
+  adding: jswing/guis/ListView.class(in = 6373) (out= 3410)(deflated 46%)
+  adding: jswing/guis/PictureFrame.class(in = 4352) (out= 2510)(deflated 42%)
+  adding: jswing/guis/ListView$.class(in = 859) (out= 456)(deflated 46%)
+  adding: jswing/guis/ListView$$anon$1.class(in = 1047) (out= 584)(deflated 44%)
+  adding: jswing/guis/ListView$$anonfun$onSelect$1.class(in = 1398) (out= 728)(deflated 47%)
+
+  ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+  adding: scala/Predef$StringFormat$.class(in = 2107) (out= 1010)(deflated 52%)
+  adding: scala/Tuple5$.class(in = 1805) (out= 768)(deflated 57%)
+  adding: scala/Function2$mcZJD$sp.class(in = 323) (out= 196)(deflated 39%)
+  adding: scala/Char.class(in = 6084) (out= 3604)(deflated 40%)
+  adding: scala/Float.class(in = 5382) (out= 3268)(deflated 39%)
+  adding: scala/Enumeration$ValueSet$$anon$2.class(in = 1673) (out= 668)(deflated 60%)
+  adding: scala-xml.properties(in = 112) (out= 76)(deflated 32%)
+  --------------------------------------
+
+  Built file: out/exrates.jar Ok.
+  Run it with $ java -jar out/exrates.jar
+
+#+END_SRC
