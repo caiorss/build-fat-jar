@@ -15,6 +15,17 @@ Motivation: It makes the distribution of java and scala libraries
 easier as the user only needs to run =$ java -jar application.jar= or
 double click at the application.jar file. The developer also doesn't
 need to build any shell script to run the jar file.
+
+Benefits: 
+
+ - Bundle a java/scala application with all its dependencies.
+
+ - Make the deployment and distribution easy and simple.
+
+ - Run Scala application in a machine without Scala installed.
+
+ - Run a Scala/java application with a simple double click.
+
 ** Install 
 ** Usage and Examples
 *** Show user help 
@@ -184,7 +195,8 @@ Built file: testProgram-fat.jar Ok.
 *3. Run it and deploy.*
 
 The fat jar can be run with a simple command =java -jar= or by double
-clicking it if the desktop is configured properly.
+clicking it if the desktop is configured properly. It can also be
+distributed to machines without Scala installed.
 
 #+BEGIN_SRC sh 
 $ java -jar testProgram-fat.jar
