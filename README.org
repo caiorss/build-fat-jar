@@ -107,6 +107,10 @@ Hello world Scala
 
 #+END_SRC
 
+It will display a simple GUI: 
+
+[[file:images/program-screenshot.png][file:images/program-screenshot.png]]
+
 Run it with java: It first will fail because the dependency
 scala-library.jar is missing.
 
@@ -198,7 +202,45 @@ Built file: testProgram-fat.jar Ok.
 
 #+END_SRC
 
-*3. Run it and deploy.*
+*3. Check the generated file*
+
+#+BEGIN_SRC sh 
+  $ file testProgram-fat.jar 
+  testProgram-fat.jar: Java archive data (JAR)
+
+  # A little bit heavier, but this size is insignificant and a very
+  # small price for all Scala's goodness.
+  #
+  $ du -h testProgram-fat.jar 
+  5,5M    testProgram-fat.jar
+  5,5M    total
+
+  $ jar -tf testProgram-fat.jar 
+  META-INF/
+  META-INF/MANIFEST.MF
+  library.properties
+  rootdoc.txt
+  scala/
+  scala/languageFeature.class
+  scala/Function6.class
+  scala/Function2$mcIDI$sp.class
+  scala/Function1$mcDI$sp.class
+  scala/Product2.class
+  scala/SerialVersionUID.class
+  scala/Function1$mcVI$sp$class.class
+  scala/Function22$class.class
+  ... ... ... ... ... .... 
+
+  scala/Float.class
+  scala/Enumeration$ValueSet$$anon$2.class
+  scalaApp/
+  scalaApp/Main.class
+  scalaApp/Main$.class
+
+#+END_SRC
+
+
+*4. Run it and deploy.*
 
 The fat jar can be run with a simple command =java -jar= or by double
 clicking it if the desktop is configured properly. It can also be
@@ -208,6 +250,7 @@ distributed to machines without Scala installed.
 $ java -jar testProgram-fat.jar
 Hello world Scala
 #+END_SRC
+
 
 **** Example 2 
 
