@@ -101,6 +101,10 @@ case "$1" in
         sleep 2
         jar -cmvf META-INF/MANIFEST.MF ../$(basename $OUTPUT_JAR) *
 
+
+        ## Remove temporary files
+        cd .. && rm -rf temp 
+        
         echo "--------------------------------------"
         echo -e "\nBuilt file: $OUTPUT_JAR Ok."
         echo -e "Run it with $ java -jar $OUTPUT_JAR"
