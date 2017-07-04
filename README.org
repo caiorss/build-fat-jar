@@ -27,6 +27,12 @@ Benefits:
  - Run a Scala/java application with a simple double click.
 
 ** Install 
+
+Just copy the script _build-fat-jar.sh_ to any directory listed in the
+$PATH variable. 
+
+No dependencies are required. It only needs java and scala available.
+
 ** Usage and Examples
 *** Show user help 
 
