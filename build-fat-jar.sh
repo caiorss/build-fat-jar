@@ -49,6 +49,8 @@ case "$1" in
     -scala-lib)
         echo "Scala library path = "$SCALA_LIB_PATH
         echo ""
+        echo "Scala run-time lib = "$SCALA_RUNTIME        
+        echo ""
         for f in $(ls $SCALA_LIB_PATH); do
             echo $SCALA_LIB_PATH/$f
         done
