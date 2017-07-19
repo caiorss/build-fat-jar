@@ -21,6 +21,9 @@ SCALA_RUNTIME=$SCALA_LIB_PATH/scala-library.jar
 
 case "$1" in
 
+    -jar-manifest)
+        unzip -p $2 META-INF/MANIFEST.MF
+        ;;
     # Show where are the scala libraries.
     -scala-lib)
         echo "Scala library path = "$SCALA_LIB_PATH
