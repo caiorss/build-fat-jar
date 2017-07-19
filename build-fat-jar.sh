@@ -8,30 +8,6 @@
 #--------------------------------------------------------------
 
 
-if [ $# -eq 0 ]
-  then
-      cat <<EOF
-Build fat jar. Tool like one-jar to build java fat jar. 
-
-Options: 
-
- + Show information about Scala libraries.
-
-    * ./$(basename $0) -scala-lib  
-
- + Build the fat jar out/output-jar.jar. 
-   The main-jar file contains the main class.
-
-   * ./$(basename $0) -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar      
-
-Note: Use the command below to eanble debug.
-
-      $ env DEBUG=true ./build-fat-jar.sh 
-
-EOF
-      exit 1
-fi
-
 
 if [ "$DEBUG" = "true" ]
 then 
@@ -113,7 +89,29 @@ case "$1" in
     ;;
     
     *)
-        echo "Error: Invalid option"
+        cat <<EOF
+Build fat jar. Tool like one-jar to build java fat jar.
+
+Options:
+
+ + Show information about Scala libraries.
+
+    * ./$(basename $0) -scala-lib
+
+ + Build the fat jar out/output-jar.jar.
+   The main-jar file contains the main class.
+
+   * ./$(basename $0) -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
+
+Note: Use the command below to eanble debug.
+
+      $ env DEBUG=true ./build-fat-jar.sh
+
+EOF
+
+
+        exit 1
+
     ;;
 esac
 
