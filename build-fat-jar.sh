@@ -21,8 +21,13 @@ SCALA_RUNTIME=$SCALA_LIB_PATH/scala-library.jar
 
 case "$1" in
 
+    # Display jar file manifest
     -jar-manifest)
         unzip -p $2 META-INF/MANIFEST.MF
+        ;;
+
+    -jar-view)
+        jar -tfv $2
         ;;
     # Show where are the scala libraries.
     -scala-lib)
