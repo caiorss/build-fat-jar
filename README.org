@@ -1,10 +1,10 @@
 #+TITLE: jar-tool.sh - Unix Shell Script to build java/Scala fat-jars
 #+AUTHOR: Caio Rodrigues
-#+STARTUP: showall 
+#+STARTUP: showall
 #+KEYWORDS: unix shell script java scala fatjar fat-jar deploy dependency
 
-* jart-tools.sh 
-** Overview 
+* jart-tools.sh
+** Overview
 
 jart-tools is a Unix shell script to build fat-jars from scala
 applications It means build a single and self-contained jar file with
@@ -16,7 +16,9 @@ easier as the user only needs to run =$ java -jar application.jar= or
 double click at the application.jar file. The developer also doesn't
 need to build any shell script to run the jar file.
 
-Benefits: 
+Benefits:
+
+ - Inspect jar files.
 
  - Bundle a java/scala application with all its dependencies.
 
@@ -26,17 +28,17 @@ Benefits:
 
  - Run a Scala/java application with a simple double click.
 
-** Install 
+** Install
 
 Just copy the script _jart-tools.sh_ to any directory listed in the
-$PATH variable. 
+$PATH variable.
 
 No dependencies are required. It only needs java and scala available.
 
-Download it: 
+Download it:
 
-#+BEGIN_SRC sh 
-  cd ~/bin 
+#+BEGIN_SRC sh
+  cd ~/bin
   $ curl -O -L https://github.com/caiorss/jart-tools/raw/master/jar-tools.sh
   $ chmod +x jar-tools.sh
 
@@ -44,35 +46,36 @@ Download it:
 #+END_SRC
 
 ** Usage and Examples
-*** Show user help 
+*** Show user help
 
  + =./jart-tools.sh=
 
 #+BEGIN_SRC text
-$ jart-tools.sh 
-Build fat jar. Tool like one-jar to build java fat jar. 
+$ jart-tools.sh
+Build fat jar. Tool like one-jar to build java fat jar.
 
-Options: 
+Options:
 
  + Show information about Scala libraries.
 
-    * ./jart-tools.sh -scala-lib  
+    * ./jart-tools.sh -scala-lib
 
- + Build the fat jar out/output-jar.jar. 
+ + Build the fat jar out/output-jar.jar.
    The main-jar file contains the main class.
 
-   * ./jart-tools.sh -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar      
+   * ./jart-tools.sh -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
 
 Note: Use the command below to eanble debug.
 
-      $ env DEBUG=true ./jart-tools.sh 
+      $ env DEBUG=true ./jart-tools.sh
 
 #+END_SRC
-*** Show scala libraries location 
+
+*** Show scala libraries location
 
  + =./jart-tools.sh -scala-lib=
 
-#+BEGIN_SRC sh 
+#+BEGIN_SRC sh
 $ jart-tools.sh -scala-lib
 Scala library path = /home/archbox/opt/scala-2.11.8/lib
 
@@ -92,8 +95,41 @@ Scala library path = /home/archbox/opt/scala-2.11.8/lib
 /home/archbox/opt/scala-2.11.8/lib/scala-xml_2.11-1.0.4.jar
 
 #+END_SRC
-*** Build a fat jar for a scala application 
-**** Overview 
+
+*** Inspect Jar files 
+**** Show manifest file 
+
+Example:
+
+ - =$ jar-tools.sh -jar-manifest canvas.jar=
+
+#+BEGIN_SRC sh 
+$ jar-tools.sh -jar-manifest canvas.jar 
+Manifest-Version: 1.0
+Scala-Compiler-Version: 2.11.8
+Main-Class: Main
+#+END_SRC
+
+**** Show contents 
+
+ + =$ jar-tools.sh -jar-view canvas.jar=
+
+#+BEGIN_SRC sh 
+$ jar-tools.sh -jar-view canvas.jar 
+    75 Fri Jul 21 18:35:46 BRT 2017 META-INF/MANIFEST.MF
+  1773 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$OriginXY$.class
+  2930 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$OriginXY.class
+   626 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$OriginType.class
+  1755 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$OriginC$.class
+  1759 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$OriginBL$.class
+  1894 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$DrawUtils$$anonfun$withContext$1.class
+  1682 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$DrawUtils$$anonfun$withColor$1$$anonfun$apply$4.class
+  1654 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$DrawUtils$$anonfun$withColor$1.class
+     ... ... ... 
+#+END_SRC
+
+*** Build a fat jar for a scala application
+**** Overview
  + =./jart-tools.sh -scala out/output-jar.jar main-jar.jar dep1.jar dep2.jar ...=
 
 Build a fat jar for the application main-jar.jar that contains the
@@ -105,26 +141,26 @@ It will build a fat-jar for the sample-scala program [[file:testProgram.scala][f
 
 1. Compile the scala program to a jar file.
 
-#+BEGIN_SRC sh 
+#+BEGIN_SRC sh
 $ scalac testProgram.scala -d testProgram.jar
 #+END_SRC
 
 Run it with scala:
 
-#+BEGIN_SRC sh 
+#+BEGIN_SRC sh
 $ scala testProgram.jar
 Hello world Scala
 
 #+END_SRC
 
-It will display a simple GUI: 
+It will display a simple GUI:
 
 [[file:images/program-screenshot.png][file:images/program-screenshot.png]]
 
 Run it with java: It first will fail because the dependency
 scala-library.jar is missing.
 
-#+BEGIN_SRC sh 
+#+BEGIN_SRC sh
 $ java -cp testProgram.jar scalaApp.Main
 Exception in thread "main" java.lang.NoClassDefFoundError: scala/Predef$
 	at scalaApp.Main$.main(testProgram.scala:8)
@@ -139,7 +175,7 @@ Caused by: java.lang.ClassNotFoundException: scala.Predef$
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
 	... 2 more
 
-$ java -jar testProgram.jar 
+$ java -jar testProgram.jar
 Exception in thread "main" java.lang.NoClassDefFoundError: scala/Predef$
 	at scalaApp.Main$.main(testProgram.scala:8)
 	at scalaApp.Main.main(testProgram.scala)
@@ -157,7 +193,7 @@ Caused by: java.lang.ClassNotFoundException: scala.Predef$
 
 Try again. Now it works.
 
-#+BEGIN_SRC scala 
+#+BEGIN_SRC scala
 $ java -cp /home/archbox/opt/scala-2.11.8/lib/scala-library.jar:testProgram.jar  scalaApp.Main
 Hello world Scala
 
@@ -167,8 +203,8 @@ Hello world Scala
 
 It will create the file testProgram-fat.jar.
 
-#+BEGIN_SRC sh 
-$ ./jar-tools.sh -scala-build-jar testProgram-fat.jar testProgram.jar 
+#+BEGIN_SRC sh
+$ ./jar-tools.sh -scala-build-jar testProgram-fat.jar testProgram.jar
 At directory /home/archbox/Documents/projects/jart-tools.sh/temp
 
 Manifest Content META-INF/MANIFEST.MF
@@ -214,18 +250,18 @@ Built file: testProgram-fat.jar Ok.
 
 *3. Check the generated file*
 
-#+BEGIN_SRC sh 
-  $ file testProgram-fat.jar 
+#+BEGIN_SRC sh
+  $ file testProgram-fat.jar
   testProgram-fat.jar: Java archive data (JAR)
 
   # A little bit heavier, but this size is insignificant and a very
   # small price for all Scala's goodness.
   #
-  $ du -h testProgram-fat.jar 
+  $ du -h testProgram-fat.jar
   5,5M    testProgram-fat.jar
   5,5M    total
 
-  $ jar -tf testProgram-fat.jar 
+  $ jar -tf testProgram-fat.jar
   META-INF/
   META-INF/MANIFEST.MF
   library.properties
@@ -239,7 +275,7 @@ Built file: testProgram-fat.jar Ok.
   scala/SerialVersionUID.class
   scala/Function1$mcVI$sp$class.class
   scala/Function22$class.class
-  ... ... ... ... ... .... 
+  ... ... ... ... ... ....
 
   scala/Float.class
   scala/Enumeration$ValueSet$$anon$2.class
@@ -256,13 +292,13 @@ The fat jar can be run with a simple command =java -jar= or by double
 clicking it if the desktop is configured properly. It can also be
 distributed to machines without Scala installed.
 
-#+BEGIN_SRC sh 
+#+BEGIN_SRC sh
 $ java -jar testProgram-fat.jar
 Hello world Scala
 #+END_SRC
 
 
-**** Example 2 
+**** Example 2
 
 Example: It will build the fat-jar file out/exrates.jar from the
 application bin/demoTableExrates.jar and pack it with
@@ -273,7 +309,7 @@ _scala-library.jar_ and _scala-xml_2.11-1.0.4.jar_.
     bin/demoTableExrates.jar \
     bin/jswing.jar /home/archbox/opt/scala-2.11.8/lib/scala-xml_2.11-1.0.4.jar
 
-  # Script output below 
+  # Script output below
   At directory /home/archbox/Documents/projects/jswing.scala/out/temp
   Extracting /home/archbox/Documents/projects/jswing.scala/bin/jswing.jar
   Extracting /home/archbox/Documents/projects/jswing.scala/bin/jswing.jar
@@ -313,3 +349,6 @@ _scala-library.jar_ and _scala-xml_2.11-1.0.4.jar_.
   Run it with $ java -jar out/exrates.jar
 
 #+END_SRC
+
+
+
