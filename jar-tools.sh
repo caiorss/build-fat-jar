@@ -21,7 +21,7 @@ SCALA_RUNTIME=$SCALA_LIB_PATH/scala-library.jar
 
 case "$1" in
 
-    # Display jar file manifest
+    # Display jar file manifest 
     -jar-manifest)
         unzip -p $2 META-INF/MANIFEST.MF
         ;;
@@ -29,6 +29,27 @@ case "$1" in
     -jar-view)
         jar -tfv $2
         ;;
+
+    # Convert jar to executable jar 
+    -jar-to-sh)
+        echo "Error: not implemented"
+        ;;
+
+    # No working yet.
+    -jar-download)
+        mkdir -p lib
+        cd lib 
+        groupId=$2
+        artifactId=$3
+        version=$4
+        groupUri="${echo "${groupId}" | sed -e 's/\./\//g' }"
+        jarFile=$artifactId-$version        
+        url="http://repo1.maven.org/maven2/$groupUri/$artifactId/$version/$jarFile"
+
+        echo $url
+        
+        ;;
+
     # Show where are the scala libraries.
     -scala-lib)
         echo "Scala library path = "$SCALA_LIB_PATH
@@ -39,8 +60,14 @@ case "$1" in
             echo $SCALA_LIB_PATH/$f
         done
         ;;
+
+    # Run a scala-jar compiled script using Scala run-time library 
+    -scala-run)
+        java -cp $SCALA_RUNTIME:$2 Main
+        ;;
     
-    -scala)
+    # Build a scala fat-jar 
+    -scala-build-jar)
 
         OUTPUT_JAR="$2"
         MAIN_JAR=$(realpath "$3")
