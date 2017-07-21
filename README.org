@@ -1,4 +1,4 @@
-#+TITLE: jar-tool.sh - Unix Shell Script to build java/Scala fat-jars
+#+TITLE: jar-tools.sh - Unix Shell Script to build java/Scala fat-jars
 #+AUTHOR: Caio Rodrigues
 #+STARTUP: showall
 #+KEYWORDS: unix shell script java scala fatjar fat-jar deploy dependency
