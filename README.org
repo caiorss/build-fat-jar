@@ -1,12 +1,12 @@
-#+TITLE: build-fat-jar - Unix Shell Script to build java/Scala fat-jars
+#+TITLE: jar-tool.sh - Unix Shell Script to build java/Scala fat-jars
 #+AUTHOR: Caio Rodrigues
 #+STARTUP: showall 
 #+KEYWORDS: unix shell script java scala fatjar fat-jar deploy dependency
 
-* build-fat-jar.sh 
+* jart-tools.sh 
 ** Overview 
 
-build-fat-jar is a Unix shell script to build fat-jars from scala
+jart-tools is a Unix shell script to build fat-jars from scala
 applications It means build a single and self-contained jar file with
 the underlying application, all dependencies and scala runt-time
 libraries.
@@ -28,7 +28,7 @@ Benefits:
 
 ** Install 
 
-Just copy the script _build-fat-jar.sh_ to any directory listed in the
+Just copy the script _jart-tools.sh_ to any directory listed in the
 $PATH variable. 
 
 No dependencies are required. It only needs java and scala available.
@@ -37,43 +37,43 @@ Download it:
 
 #+BEGIN_SRC sh 
   cd ~/bin 
-  $ curl -O -L https://github.com/caiorss/build-fat-jar/raw/master/build-fat-jar.sh
-  $ chmod +x build-fat-jar.sh
+  $ curl -O -L https://github.com/caiorss/jart-tools/raw/master/jar-tools.sh
+  $ chmod +x jar-tools.sh
 
-  $ ./build-fat-jar.sh
+  $ ./jar-tools.sh
 #+END_SRC
 
 ** Usage and Examples
 *** Show user help 
 
- + =./build-fat-jar.sh=
+ + =./jart-tools.sh=
 
 #+BEGIN_SRC text
-$ build-fat-jar.sh 
+$ jart-tools.sh 
 Build fat jar. Tool like one-jar to build java fat jar. 
 
 Options: 
 
  + Show information about Scala libraries.
 
-    * ./build-fat-jar.sh -scala-lib  
+    * ./jart-tools.sh -scala-lib  
 
  + Build the fat jar out/output-jar.jar. 
    The main-jar file contains the main class.
 
-   * ./build-fat-jar.sh -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar      
+   * ./jart-tools.sh -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar      
 
 Note: Use the command below to eanble debug.
 
-      $ env DEBUG=true ./build-fat-jar.sh 
+      $ env DEBUG=true ./jart-tools.sh 
 
 #+END_SRC
 *** Show scala libraries location 
 
- + =./build-fat-jar.sh -scala-lib=
+ + =./jart-tools.sh -scala-lib=
 
 #+BEGIN_SRC sh 
-$ build-fat-jar.sh -scala-lib
+$ jart-tools.sh -scala-lib
 Scala library path = /home/archbox/opt/scala-2.11.8/lib
 
 /home/archbox/opt/scala-2.11.8/lib/akka-actor_2.11-2.3.10.jar
@@ -94,7 +94,7 @@ Scala library path = /home/archbox/opt/scala-2.11.8/lib
 #+END_SRC
 *** Build a fat jar for a scala application 
 **** Overview 
- + =./build-fat-jar.sh -scala out/output-jar.jar main-jar.jar dep1.jar dep2.jar ...=
+ + =./jart-tools.sh -scala out/output-jar.jar main-jar.jar dep1.jar dep2.jar ...=
 
 Build a fat jar for the application main-jar.jar that contains the
 main class packing it with the scala run-time (scala-library.jar) and
@@ -168,8 +168,8 @@ Hello world Scala
 It will create the file testProgram-fat.jar.
 
 #+BEGIN_SRC sh 
-$ ./build-fat-jar.sh -scala testProgram-fat.jar testProgram.jar 
-At directory /home/archbox/Documents/projects/build-fat-jar.sh/temp
+$ ./jar-tools.sh -scala-build-jar testProgram-fat.jar testProgram.jar 
+At directory /home/archbox/Documents/projects/jart-tools.sh/temp
 
 Manifest Content META-INF/MANIFEST.MF
 
@@ -269,7 +269,7 @@ application bin/demoTableExrates.jar and pack it with
 _scala-library.jar_ and _scala-xml_2.11-1.0.4.jar_.
 
 #+BEGIN_SRC sh
-  $ build-fat-jar.sh -scala out/exrates.jar \
+  $ jar-tools.sh -scala out/exrates.jar \
     bin/demoTableExrates.jar \
     bin/jswing.jar /home/archbox/opt/scala-2.11.8/lib/scala-xml_2.11-1.0.4.jar
 
