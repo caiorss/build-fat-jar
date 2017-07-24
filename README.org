@@ -71,7 +71,7 @@ Options:
 
  + Display manifest of a jar file.
  
-   * ./jar-tools.sh -jar-mainifest file.jar 
+   * ./jar-tools.sh -jar-manifest file.jar 
  
  + Display main class of a jar file. 
 
