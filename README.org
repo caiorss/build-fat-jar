@@ -51,23 +51,40 @@ Download it:
  + =./jart-tools.sh=
 
 #+BEGIN_SRC text
-$ jart-tools.sh
+$ jar-tools.sh
 Build fat jar. Tool like one-jar to build java fat jar.
 
 Options:
 
  + Show information about Scala libraries.
 
-    * ./jart-tools.sh -scala-lib
+    * ./jar-tools.sh -scala-lib
 
- + Build the fat jar out/output-jar.jar.
-   The main-jar file contains the main class.
+ + Run an application compiled with Scala using its runtime.
 
-   * ./jart-tools.sh -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
+   * ./jar-tools.sh -scala-run scalaApp.jar 
 
-Note: Use the command below to eanble debug.
+ + Build a fat jar for a Scala application. out/output-jar.jar. The
+ main-jar file contains the main class.
 
-      $ env DEBUG=true ./jart-tools.sh
+   * ./jar-tools.sh -scala-build-jar out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
+
+ + Display manifest of a jar file.
+ 
+   * ./jar-tools.sh -jar-mainifest file.jar 
+ 
+ + Display main class of a jar file. 
+
+   * ./jar-tools.sh -jar-main file.jar 
+
+ + View contents of a jar file 
+ 
+   * ./jar-tools.sh -jar-view file.jar 
+
+
+Note: Use the command below to enable debug.
+
+      $ env DEBUG=true ./build-fat-jar.sh
 
 #+END_SRC
 
