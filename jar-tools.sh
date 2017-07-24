@@ -137,12 +137,29 @@ Options:
 
     * ./$(basename $0) -scala-lib
 
- + Build the fat jar out/output-jar.jar.
-   The main-jar file contains the main class.
+ + Run an application compiled with Scala using its runtime.
 
-   * ./$(basename $0) -scala out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
+   * ./$(basename $0) -scala-run scalaApp.jar 
 
-Note: Use the command below to eanble debug.
+ + Build a fat jar for a Scala application. out/output-jar.jar. The
+ main-jar file contains the main class.
+
+   * ./$(basename $0) -scala-build-jar out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
+
+ + Display manifest of a jar file.
+ 
+   * ./$(basename $0) -jar-mainifest file.jar 
+ 
+ + Display main class of a jar file. 
+
+   * ./$(basename $0) -jar-main file.jar 
+
+ + View contents of a jar file 
+ 
+   * ./$(basename $0) -jar-view file.jar 
+
+
+Note: Use the command below to enable debug.
 
       $ env DEBUG=true ./build-fat-jar.sh
 
