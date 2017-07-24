@@ -26,6 +26,10 @@ case "$1" in
         unzip -p $2 META-INF/MANIFEST.MF
         ;;
 
+    -jar-main)
+        unzip -p $2 META-INF/MANIFEST.MF | grep -i 'Main-Class'
+        ;;
+
     -jar-view)
         jar -tfv $2
         ;;
