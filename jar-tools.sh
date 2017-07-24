@@ -34,9 +34,20 @@ case "$1" in
         jar -tfv $2
         ;;
 
-    # Convert jar to executable jar 
+    # Convert fat-jar jar to executable jar with .sh extension 
     -jar-to-sh)
-        echo "Error: not implemented"
+        INPUT_JAR=$2
+        OUTPUT_SH=$3
+        cat <<EOF > $OUTPUT_SH
+#!/usr/bin/env sh 
+java -jar \$0
+exit 0
+EOF
+        cat $INPUT_JAR >> $OUTPUT_SH
+        chmod +x $OUTPUT_SH
+        
+        echo "Build jar-executable $OUTPUT_SH"
+        echo "Run it with ./$OUTPUT_SH"
         ;;
 
     # No working yet.
@@ -146,6 +157,7 @@ Options:
 
    * ./$(basename $0) -scala-build-jar out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
 
+
  + Display manifest of a jar file.
  
    * ./$(basename $0) -jar-mainifest file.jar 
@@ -158,6 +170,11 @@ Options:
  
    * ./$(basename $0) -jar-view file.jar 
 
+ + Makes an executable, self-invocable jar-file from a fat-jar that
+ can be run as ./jar-file.sh
+
+   * ./$(basename $0) -jar-to-sh file.jar file.sh 
+   
 
 Note: Use the command below to enable debug.
 
