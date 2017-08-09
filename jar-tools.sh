@@ -80,6 +80,15 @@ EOF
     -scala-run)
         java -cp $SCALA_RUNTIME:$2 Main
         ;;
+
+    -scala-repl)
+          jars=""
+          for f in $(ls ./lib); do
+              jars=lib/$f:$jars 
+          done
+          scala -cp $jars "${@:3}"
+        ;;
+
     
     # Build a scala fat-jar 
     -scala-build-jar)
@@ -151,6 +160,10 @@ Options:
  + Run an application compiled with Scala using its runtime.
 
    * ./$(basename $0) -scala-run scalaApp.jar 
+
+ + Start scala repl loading all *.jar files in classpath from ./lib 
+
+   * ./$(basename $0) -scala-repl
 
  + Build a fat jar for a Scala application. out/output-jar.jar. The
  main-jar file contains the main class.
