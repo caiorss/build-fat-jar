@@ -40,7 +40,7 @@ case "$1" in
         OUTPUT_SH=$3
         cat <<EOF > $OUTPUT_SH
 #!/usr/bin/env sh 
-java -jar \$0
+java -jar \$0 \$@
 exit 0
 EOF
         cat $INPUT_JAR >> $OUTPUT_SH
