@@ -78,7 +78,7 @@ EOF
 
     # Run a scala-jar compiled script using Scala run-time library 
     -scala-run)
-        java -cp $SCALA_RUNTIME:$2 Main
+        java -cp $SCALA_RUNTIME:$2 Main "${@:3}"
         ;;
 
     -scala-repl)
