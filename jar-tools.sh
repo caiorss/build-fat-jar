@@ -225,11 +225,16 @@ Options:
 
    * ./$(basename $0) -jar-view file.jar
 
- + Makes an executable, self-invocable jar-file from a fat-jar that
- can be run as ./jar-file.sh
+ + Make a self-executable jar-file.sh out of jar-file.jar 
+   that can be run as ./jar-file.sh instead of '$ java -jar jar-file.jar.'
 
-   * ./$(basename $0) -jar-to-sh file.jar file.sh
+   * ./$(basename $0) -jar-to-sh file.jar
 
+ + Makes a self-executable jar file with .sh extension out of a scala
+   compiled jar file. It assumes that scala is instaled in the target machine. 
+   The generated file, app.sh that can be run as ./app.sh instead of '$ java -jar app.sh'
+
+   *  ./$(basename $0) -jar-to-sh2 file.jar
 
 Note: Use the command below to enable debug.
 
