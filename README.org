@@ -51,7 +51,7 @@ Download it:
  + =./jart-tools.sh=
 
 #+BEGIN_SRC text
-$ jar-tools.sh
+$ jar-tools.sh 
 Build fat jar. Tool like one-jar to build java fat jar.
 
 Options:
@@ -62,25 +62,40 @@ Options:
 
  + Run an application compiled with Scala using its runtime.
 
-   * ./jar-tools.sh -scala-run scalaApp.jar 
+   * ./jar-tools.sh -scala-run scalaApp.jar
+
+ + Start scala repl loading all *.jar files in classpath from ./lib
+
+   * ./jar-tools.sh -scala-repl
 
  + Build a fat jar for a Scala application. out/output-jar.jar. The
  main-jar file contains the main class.
 
    * ./jar-tools.sh -scala-build-jar out/output-jar.jar main-jar.jar lib/dependency1.jar lib/dependency2.jar
 
+
  + Display manifest of a jar file.
- 
-   * ./jar-tools.sh -jar-manifest file.jar 
- 
- + Display main class of a jar file. 
 
-   * ./jar-tools.sh -jar-main file.jar 
+   * ./jar-tools.sh -jar-mainifest file.jar
 
- + View contents of a jar file 
- 
-   * ./jar-tools.sh -jar-view file.jar 
+ + Display main class of a jar file.
 
+   * ./jar-tools.sh -jar-main file.jar
+
+ + View contents of a jar file
+
+   * ./jar-tools.sh -jar-view file.jar
+
+ + Make a self-executable jar-file.sh out of jar-file.jar 
+   that can be run as ./jar-file.sh instead of '$ java -jar jar-file.jar.'
+
+   * ./jar-tools.sh -jar-to-sh file.jar
+
+ + Makes a self-executable jar file with .sh extension out of a scala
+   compiled jar file. It assumes that scala is instaled in the target machine. 
+   The generated file, app.sh that can be run as ./app.sh instead of '$ java -jar app.sh'
+
+   *  ./jar-tools.sh -jar-to-sh2 file.jar
 
 Note: Use the command below to enable debug.
 
@@ -143,6 +158,86 @@ $ jar-tools.sh -jar-view canvas.jar
   1682 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$DrawUtils$$anonfun$withColor$1$$anonfun$apply$4.class
   1654 Fri Jul 21 18:35:46 BRT 2017 Main$$anon$2$DrawUtils$$anonfun$withColor$1.class
      ... ... ... 
+#+END_SRC
+
+*** Make a self-executable jar file 
+
+It generates a self-executable jar-file with '.sh' extension of unix
+shell script from a runnable jar file named app.jar which can be
+executed with:
+
+ - =$ java -jar app.jar= 
+
+The application can be executed with ./app.sh.
+
+1. Run 
+
+#+BEGIN_SRC sh 
+$ jar-tools.sh -jar-to-sh out/linuxPanel.jar
+Build jar-executable out/linuxPanel.sh
+Run it with ./out/linuxPanel.sh
+#+END_SRC
+
+2. The command above generates linuxPanel.sh that can be executed with: 
+
+#+BEGIN_SRC sh 
+./linuxPanel.sh
+#+END_SRC
+
+*** Make a self-executable jar file without scala-library bundled
+
+This command builds a self-executable jar-file out of a scala-compiled
+jar file that cannot be run with 'java -jar' directly, but can be run
+with 'scala app.jar'. 
+
+Example: 
+
+1. Build the program linuxPanel.jar 
+
+#+BEGIN_SRC sh
+$ scalac linuxPanel.scala -d linuxPanel.jar
+#+END_SRC
+
+2. Build the self-executable jar, named linuxPanel.sh. 
+
+#+BEGIN_SRC sh 
+$ jar-tools.sh -jar-to-sh2 linuxPanel.jar 
+Input      = linuxPanel.jar
+Output     = linuxPanel.sh
+Main class =  linuxPanel.Main
+Build jar-executable linuxPanel.sh
+Run it with ./linuxPanel.sh
+#+END_SRC
+
+3. Run the application linuxPanel.sh 
+
+#+BEGIN_SRC sh 
+./linuxPanel.sh 
+#+END_SRC
+
+4. Optional - Check linuxPanel.sh 
+
+#+BEGIN_SRC sh 
+$ file linuxPanel.sh 
+linuxPanel.sh: a /usr/bin/env sh script executable (binary data)
+
+
+$ head -n 15 linuxPanel.sh 
+#!/usr/bin/env sh
+
+# set -x
+
+SCALA_LIB_PATH="$(dirname $(dirname $(which scala)))"/lib
+
+jars=""
+for f in $(ls $SCALA_LIB_PATH); do
+    jars=$SCALA_LIB_PATH/$f:$jars
+done
+jars=$jars"."
+
+java -cp $jars:$0  linuxPanel.Main
+
+exit 0
 #+END_SRC
 
 *** Build a fat jar for a scala application
@@ -313,7 +408,6 @@ distributed to machines without Scala installed.
 $ java -jar testProgram-fat.jar
 Hello world Scala
 #+END_SRC
-
 
 **** Example 2
 
