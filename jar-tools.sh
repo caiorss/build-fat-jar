@@ -37,7 +37,7 @@ case "$1" in
     # Convert fat-jar jar to executable jar with .sh extension
     -jar-to-sh)
         INPUT_JAR=$2
-        OUTPUT_SH=$3
+        OUTPUT_SH="${INPUT_JAR%.*}.sh" 
         cat <<EOF > $OUTPUT_SH
 #!/usr/bin/env sh
 java -jar \$0 \$@
